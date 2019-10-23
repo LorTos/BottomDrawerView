@@ -7,16 +7,13 @@
 //
 
 import UIKit
-import BottomDrawerView
 
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        BottomDrawerView()
         // Do any additional setup after loading the view.
+        
     }
-
-
 }
 

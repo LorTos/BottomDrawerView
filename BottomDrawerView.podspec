@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "BottomDrawerView"
-  spec.version      = "0.1.1"
+  spec.version      = "0.2.0"
   spec.summary      = "A versatile draggable bottom drawer. CocoaPods library written in swift."
 
   # This description is used to generate tags and improve search results.
@@ -60,6 +60,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.platform     = :ios, "11.0"
+  spec.swift_versions = ["4.2", "5.0", "5.1"]
 
   #  When using multiple platforms
   # spec.ios.deployment_target = "5.0"
@@ -85,7 +86,7 @@ Pod::Spec.new do |spec|
   #  Not including the public_header_files will make all headers public.
   #
 
-  spec.source_files  = "BottomDrawerView/**/*.{h,m}"
+  spec.source_files  = "Sources/**/*.swift"
 
   # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #
