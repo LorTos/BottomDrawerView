@@ -16,6 +16,10 @@
 		FE55749B2360E69500B04BF1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FE5574992360E69500B04BF1 /* Main.storyboard */; };
 		FE55749D2360E69800B04BF1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FE55749C2360E69800B04BF1 /* Assets.xcassets */; };
 		FE5574A02360E69800B04BF1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FE55749E2360E69800B04BF1 /* LaunchScreen.storyboard */; };
+		FE5574AA2360E90000B04BF1 /* DVPositionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE5574A62360E90000B04BF1 /* DVPositionManager.swift */; };
+		FE5574AB2360E90000B04BF1 /* DVContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE5574A72360E90000B04BF1 /* DVContainerView.swift */; };
+		FE5574AC2360E90000B04BF1 /* BottomDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE5574A82360E90000B04BF1 /* BottomDrawer.swift */; };
+		FE5574AD2360E90000B04BF1 /* DrawerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE5574A92360E90000B04BF1 /* DrawerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +47,10 @@
 		FE55749C2360E69800B04BF1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FE55749F2360E69800B04BF1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FE5574A12360E69800B04BF1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FE5574A62360E90000B04BF1 /* DVPositionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DVPositionManager.swift; sourceTree = "<group>"; };
+		FE5574A72360E90000B04BF1 /* DVContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DVContainerView.swift; sourceTree = "<group>"; };
+		FE5574A82360E90000B04BF1 /* BottomDrawer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomDrawer.swift; sourceTree = "<group>"; };
+		FE5574A92360E90000B04BF1 /* DrawerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +102,10 @@
 		FE5574752360E5B600B04BF1 /* BottomDrawerView */ = {
 			isa = PBXGroup;
 			children = (
+				FE5574A82360E90000B04BF1 /* BottomDrawer.swift */,
+				FE5574A92360E90000B04BF1 /* DrawerView.swift */,
+				FE5574A72360E90000B04BF1 /* DVContainerView.swift */,
+				FE5574A62360E90000B04BF1 /* DVPositionManager.swift */,
 				FE5574762360E5B600B04BF1 /* BottomDrawerView.h */,
 				FE5574772360E5B600B04BF1 /* Info.plist */,
 			);
@@ -202,6 +214,7 @@
 				TargetAttributes = {
 					FE5574722360E5B600B04BF1 = {
 						CreatedOnToolsVersion = 11.1;
+						LastSwiftMigration = 1110;
 					};
 					FE55747B2360E5B600B04BF1 = {
 						CreatedOnToolsVersion = 11.1;
@@ -224,9 +237,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				FE5574902360E69500B04BF1 /* BottomDrawerViewExample */,
 				FE5574722360E5B600B04BF1 /* BottomDrawerView */,
 				FE55747B2360E5B600B04BF1 /* BottomDrawerViewTests */,
+				FE5574902360E69500B04BF1 /* BottomDrawerViewExample */,
 			);
 		};
 /* End PBXProject section */
@@ -263,6 +276,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FE5574AB2360E90000B04BF1 /* DVContainerView.swift in Sources */,
+				FE5574AC2360E90000B04BF1 /* BottomDrawer.swift in Sources */,
+				FE5574AA2360E90000B04BF1 /* DVPositionManager.swift in Sources */,
+				FE5574AD2360E90000B04BF1 /* DrawerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -437,6 +454,7 @@
 		FE5574882360E5B600B04BF1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = H869PTQ6DC;
@@ -455,6 +473,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -463,6 +482,7 @@
 		FE5574892360E5B600B04BF1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = H869PTQ6DC;
@@ -489,6 +509,7 @@
 		FE55748B2360E5B600B04BF1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = H869PTQ6DC;
 				INFOPLIST_FILE = BottomDrawerViewTests/Info.plist;
@@ -507,6 +528,7 @@
 		FE55748C2360E5B600B04BF1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = H869PTQ6DC;
 				INFOPLIST_FILE = BottomDrawerViewTests/Info.plist;
