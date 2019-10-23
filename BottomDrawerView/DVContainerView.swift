@@ -35,7 +35,7 @@ class DVContainerView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func addViewToContainer() {
+    func addViewToContainer() {
         containingView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         containingView.frame = bounds
         addSubview(containingView)

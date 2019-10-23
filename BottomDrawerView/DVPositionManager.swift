@@ -8,9 +8,9 @@
 
 import UIKit
 
-class DVPositionManager {
+public class DVPositionManager {
     
-    enum Position {
+    public enum Position {
         case expanded, partial, collapsed
     }
     

@@ -8,11 +8,11 @@
 
 import UIKit
 
-class BottomDrawer: UIViewController {
+public class BottomDrawer: UIViewController {
     
-    private var dismissTapGesture: UITapGestureRecognizer!
+    var dismissTapGesture: UITapGestureRecognizer!
     private(set) var drawerView: DrawerView!
-    private var didPresent = false
+    var didPresent = false
     
     convenience init(containingView childView: UIView, height: CGFloat) {
         self.init()
@@ -26,7 +26,7 @@ class BottomDrawer: UIViewController {
         drawerView = DrawerView(containing: childViewController, inside: self, totalHeight: height, draggableViewHeight: 44)
         commonDraggableViewSetup()
     }
-    private func commonDraggableViewSetup() {
+    func commonDraggableViewSetup() {
         drawerView.bottomOffset = tabBarController?.tabBar.bounds.height ?? 0
         drawerView.hidesOnCollapsedPosition = true
         drawerView.isPartialPositionEnabled = false
@@ -35,7 +35,7 @@ class BottomDrawer: UIViewController {
         drawerView.delegate = self
     }
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor.black.withAlphaComponent(0.6)
@@ -43,25 +43,25 @@ class BottomDrawer: UIViewController {
         dismissTapGesture.delegate = self
         view.addGestureRecognizer(dismissTapGesture)
     }
-    override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         drawerView.setPosition(to: .expanded, animated: true)
     }
     
-    @objc private func collapseView() {
+    @objc func collapseView() {
         drawerView.setPosition(to: .collapsed, animated: true)
     }
 }
 
 extension BottomDrawer: UIGestureRecognizerDelegate {
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         let touchIsInDrawer = touch.view?.isDescendant(of: drawerView) ?? false
         return !touchIsInDrawer
     }
 }
 
 extension BottomDrawer: DraggableViewDelegate {
-    func draggableView(_ draggableView: DrawerView, didFinishUpdatingPosition position: DVPositionManager.Position) {
+    public func draggableView(_ draggableView: DrawerView, didFinishUpdatingPosition position: DVPositionManager.Position) {
         switch position {
         case .expanded:
             if !didPresent {

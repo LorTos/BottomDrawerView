@@ -8,14 +8,14 @@
 
 import UIKit
 
-protocol DraggableViewDelegate: class {
+public protocol DraggableViewDelegate: class {
     func draggableView(_ draggableView: DrawerView, didFinishUpdatingPosition position: DVPositionManager.Position)
 }
 
-class DrawerView: UIView {
+public class DrawerView: UIView {
     
     // MARK: - Variables
-    private lazy var lineView: UIView = {
+    lazy var lineView: UIView = {
         let view = UIView()
         view.frame = CGRect(x: 0, y: 0, width: lineWidth, height: 2)
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -24,25 +24,25 @@ class DrawerView: UIView {
         view.backgroundColor = lineTintColor
         return view
     }()
-    private var interactiveView: UIView
-    private var containerView: DVContainerView
+    var interactiveView: UIView
+    var containerView: DVContainerView
     
-    private var panGesture: UIPanGestureRecognizer!
-    private var positionManager: DVPositionManager
-    var currentPosition: DVPositionManager.Position {
+    var panGesture: UIPanGestureRecognizer!
+    var positionManager: DVPositionManager
+    public var currentPosition: DVPositionManager.Position {
         return positionManager.currentPosition
     }
     
     // MARK: - Properties
-    private var draggableViewHeight: CGFloat
-    private let lineWidth: CGFloat = 32
+    var draggableViewHeight: CGFloat
+    let lineWidth: CGFloat = 32
     
-    var isDragEnabled: Bool = true {
+    public var isDragEnabled: Bool = true {
         didSet {
             panGesture.isEnabled = isDragEnabled
         }
     }
-    var isPartialPositionEnabled: Bool {
+    public var isPartialPositionEnabled: Bool {
         get {
             return positionManager.isPartialPositionEnabled
         }
@@ -50,7 +50,7 @@ class DrawerView: UIView {
             positionManager.isPartialPositionEnabled = newValue
         }
     }
-    var hidesOnCollapsedPosition: Bool {
+    public var hidesOnCollapsedPosition: Bool {
         get {
             return positionManager.hidesOnCollapse
         }
@@ -58,7 +58,7 @@ class DrawerView: UIView {
             positionManager.hidesOnCollapse = newValue
         }
     }
-    var topOffset: CGFloat {
+    public var topOffset: CGFloat {
         get {
             return positionManager.topOffset
         }
@@ -66,7 +66,7 @@ class DrawerView: UIView {
             positionManager.topOffset = newValue
         }
     }
-    var bottomOffset: CGFloat {
+    public var bottomOffset: CGFloat {
         get {
             return positionManager.bottomOffset
         }
@@ -75,18 +75,18 @@ class DrawerView: UIView {
         }
     }
     /// Sets corner radius of draggable view. Defaults to **6**
-    var cornerRadius: CGFloat = 6 {
+    public var cornerRadius: CGFloat = 6 {
         didSet {
             layer.cornerRadius = cornerRadius
             interactiveView.layer.cornerRadius = cornerRadius
         }
     }
-    var lineTintColor: UIColor = .lightGray {
+    public var lineTintColor: UIColor = .lightGray {
         didSet {
             lineView.backgroundColor = lineTintColor
         }
     }
-    var interactiveViewBorderWidth: CGFloat {
+    public var interactiveViewBorderWidth: CGFloat {
         get {
             return interactiveView.layer.borderWidth
         }
@@ -94,7 +94,7 @@ class DrawerView: UIView {
             interactiveView.layer.borderWidth = newValue
         }
     }
-    var interactiveViewBorderColor: CGColor? {
+    public var interactiveViewBorderColor: CGColor? {
         get {
             return interactiveView.layer.borderColor
         }
@@ -102,7 +102,7 @@ class DrawerView: UIView {
             interactiveView.layer.borderColor = newValue
         }
     }
-    override var backgroundColor: UIColor? {
+    override public var backgroundColor: UIColor? {
         didSet {
             layer.backgroundColor = backgroundColor?.cgColor
             containerView.backgroundColor = backgroundColor
@@ -110,7 +110,7 @@ class DrawerView: UIView {
     }
     
     // MARK: - Delegate
-    weak var delegate: DraggableViewDelegate?
+    weak public var delegate: DraggableViewDelegate?
     
     // MARK: - init() and initial setup
     init(containing childController: UIViewController,
@@ -171,7 +171,7 @@ class DrawerView: UIView {
         fatalError("init(:coder) not implemented")
     }
     
-    private func setRoundedCornersAndShadow() {
+    func setRoundedCornersAndShadow() {
         layer.cornerRadius = cornerRadius
         layer.maskedCorners = CACornerMask(arrayLiteral: [.layerMinXMinYCorner, .layerMaxXMinYCorner])
         layer.masksToBounds = false
@@ -181,7 +181,7 @@ class DrawerView: UIView {
         layer.shadowOpacity = 0.1
     }
     
-    private func setupInteractiveView() {
+    func setupInteractiveView() {
         addSubview(interactiveView)
         
         interactiveView.layer.borderColor = UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1).cgColor
@@ -216,7 +216,7 @@ class DrawerView: UIView {
         addPanGesture()
     }
     
-    private func setupContainerView() {
+    func setupContainerView() {
         addSubview(containerView)
         containerView.topAnchor.constraint(equalTo: interactiveView.bottomAnchor).isActive = true
         containerView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor).isActive = true
@@ -225,13 +225,13 @@ class DrawerView: UIView {
     }
     
     
-    override func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
         layer.shadowPath = UIBezierPath(roundedRect: layer.bounds, cornerRadius: layer.cornerRadius).cgPath
     }
     
     // MARK: - Functions
-    func setPosition(to position: DVPositionManager.Position, animated: Bool, completion: (() -> Void)? = nil) {
+    public func setPosition(to position: DVPositionManager.Position, animated: Bool, completion: (() -> Void)? = nil) {
         positionManager.currentPosition = position
         
         let fullFrame = positionManager.frame(forPosition: position)
@@ -254,7 +254,7 @@ class DrawerView: UIView {
         handlePan(gesture)
     }
     
-    private func handlePan(_ gesture: UIPanGestureRecognizer) {
+    func handlePan(_ gesture: UIPanGestureRecognizer) {
         func applyTranslation(_ yTranslation: CGFloat) {
             let transform = CGAffineTransform(translationX: 0, y: yTranslation)
             let newFrame = frame.applying(transform)
