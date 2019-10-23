@@ -51,6 +51,9 @@
 		FE5574A72360E90000B04BF1 /* DVContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DVContainerView.swift; sourceTree = "<group>"; };
 		FE5574A82360E90000B04BF1 /* BottomDrawer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomDrawer.swift; sourceTree = "<group>"; };
 		FE5574A92360E90000B04BF1 /* DrawerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawerView.swift; sourceTree = "<group>"; };
+		FE5574AE2360F63400B04BF1 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		FE5574AF2360F63400B04BF1 /* BottomDrawerView.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = BottomDrawerView.podspec; sourceTree = "<group>"; };
+		FE5574B02360F63400B04BF1 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +85,9 @@
 		FE5574692360E5B600B04BF1 = {
 			isa = PBXGroup;
 			children = (
+				FE5574B02360F63400B04BF1 /* README.md */,
+				FE5574AE2360F63400B04BF1 /* LICENSE */,
+				FE5574AF2360F63400B04BF1 /* BottomDrawerView.podspec */,
 				FE5574752360E5B600B04BF1 /* BottomDrawerView */,
 				FE5574802360E5B600B04BF1 /* BottomDrawerViewTests */,
 				FE5574922360E69500B04BF1 /* BottomDrawerViewExample */,
