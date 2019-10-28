@@ -8,11 +8,17 @@
 
 import UIKit
 
+public protocol BottomDrawerDelegate: class {
+    func didDismissBottomDrawer()
+}
+
 public class BottomDrawer: UIViewController {
     
     var dismissTapGesture: UITapGestureRecognizer!
     private(set) var drawerView: DrawerView!
     var didPresent = false
+    
+    public weak var delegate: BottomDrawerDelegate?
     
     public init(containingView childView: UIView, height: CGFloat) {
         super.init(nibName: nil, bundle: nil)
@@ -58,8 +64,12 @@ public class BottomDrawer: UIViewController {
         super.viewWillAppear(animated)
         drawerView.setPosition(to: .expanded, animated: true)
     }
+    override public func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        delegate?.didDismissBottomDrawer()
+    }
     
-    @objc func collapseView() {
+    @objc public func dismissController() {
         drawerView.setPosition(to: .collapsed, animated: true)
     }
 }
@@ -72,7 +82,7 @@ extension BottomDrawer: UIGestureRecognizerDelegate {
 }
 
 extension BottomDrawer: DraggableViewDelegate {
-    public func draggableView(_ draggableView: DrawerView, didFinishUpdatingPosition position: DVPositionManager.Position) {
+    func draggableView(_ draggableView: DrawerView, didFinishUpdatingPosition position: DVPositionManager.Position) {
         switch position {
         case .expanded:
             if !didPresent {
