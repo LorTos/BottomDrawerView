@@ -17,17 +17,24 @@ public class BottomDrawer: UIViewController {
     public init(containingView childView: UIView, height: CGFloat) {
         super.init(nibName: nil, bundle: nil)
         
+        commonControllerSetup()
         drawerView = DrawerView(containing: childView, inside: self, totalHeight: height, draggableViewHeight: 44)
         commonDraggableViewSetup()
     }
     public init(containingViewController childViewController: UIViewController, height: CGFloat) {
         super.init(nibName: nil, bundle: nil)
         
+        commonControllerSetup()
         drawerView = DrawerView(containing: childViewController, inside: self, totalHeight: height, draggableViewHeight: 44)
         commonDraggableViewSetup()
     }
-    public required init?(coder: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) not implemented")
+    }
+    
+    func commonControllerSetup() {
+        modalPresentationStyle = .overFullScreen
+        modalTransitionStyle = .crossDissolve
     }
     
     func commonDraggableViewSetup() {

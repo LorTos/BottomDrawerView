@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -15,6 +15,8 @@
 		FE0573F92367294C00DF2BB8 /* BottomDrawerViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0573E92367293C00DF2BB8 /* BottomDrawerViewTests.swift */; };
 		FE0573FA2367294C00DF2BB8 /* LinuxMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0573EA2367293C00DF2BB8 /* LinuxMain.swift */; };
 		FE05740B236729BE00DF2BB8 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE05740A236729BE00DF2BB8 /* Package.swift */; };
+		FE05743223672F9000DF2BB8 /* OtherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE05743123672F9000DF2BB8 /* OtherViewController.swift */; };
+		FE0574352367376200DF2BB8 /* BottomDrawerView in Frameworks */ = {isa = PBXBuildFile; productRef = FE0574342367376200DF2BB8 /* BottomDrawerView */; };
 		FE55747D2360E5B600B04BF1 /* BottomDrawerView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE5574732360E5B600B04BF1 /* BottomDrawerView.framework */; };
 		FE5574942360E69500B04BF1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE5574932360E69500B04BF1 /* AppDelegate.swift */; };
 		FE5574962360E69500B04BF1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE5574952360E69500B04BF1 /* SceneDelegate.swift */; };
@@ -43,6 +45,7 @@
 		FE0573EF2367293C00DF2BB8 /* DVContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DVContainerView.swift; sourceTree = "<group>"; };
 		FE0573F02367293C00DF2BB8 /* BottomDrawer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomDrawer.swift; sourceTree = "<group>"; };
 		FE05740A236729BE00DF2BB8 /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		FE05743123672F9000DF2BB8 /* OtherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherViewController.swift; sourceTree = "<group>"; };
 		FE5574732360E5B600B04BF1 /* BottomDrawerView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BottomDrawerView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE55747C2360E5B600B04BF1 /* BottomDrawerViewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BottomDrawerViewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE5574912360E69500B04BF1 /* BottomDrawerViewExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BottomDrawerViewExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -78,6 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FE0574352367376200DF2BB8 /* BottomDrawerView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -151,6 +155,7 @@
 				FE5574932360E69500B04BF1 /* AppDelegate.swift */,
 				FE5574952360E69500B04BF1 /* SceneDelegate.swift */,
 				FE5574972360E69500B04BF1 /* ViewController.swift */,
+				FE05743123672F9000DF2BB8 /* OtherViewController.swift */,
 				FE5574992360E69500B04BF1 /* Main.storyboard */,
 				FE55749C2360E69800B04BF1 /* Assets.xcassets */,
 				FE55749E2360E69800B04BF1 /* LaunchScreen.storyboard */,
@@ -221,6 +226,9 @@
 			dependencies = (
 			);
 			name = BottomDrawerViewExample;
+			packageProductDependencies = (
+				FE0574342367376200DF2BB8 /* BottomDrawerView */,
+			);
 			productName = BottomDrawerViewExample;
 			productReference = FE5574912360E69500B04BF1 /* BottomDrawerViewExample.app */;
 			productType = "com.apple.product-type.application";
@@ -256,6 +264,9 @@
 				Base,
 			);
 			mainGroup = FE5574692360E5B600B04BF1;
+			packageReferences = (
+				FE0574332367376200DF2BB8 /* XCRemoteSwiftPackageReference "BottomDrawerView" */,
+			);
 			productRefGroup = FE5574742360E5B600B04BF1 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -322,6 +333,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE5574982360E69500B04BF1 /* ViewController.swift in Sources */,
+				FE05743223672F9000DF2BB8 /* OtherViewController.swift in Sources */,
 				FE5574942360E69500B04BF1 /* AppDelegate.swift in Sources */,
 				FE5574962360E69500B04BF1 /* SceneDelegate.swift in Sources */,
 			);
@@ -648,6 +660,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		FE0574332367376200DF2BB8 /* XCRemoteSwiftPackageReference "BottomDrawerView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/LorTos/BottomDrawerView.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FE0574342367376200DF2BB8 /* BottomDrawerView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FE0574332367376200DF2BB8 /* XCRemoteSwiftPackageReference "BottomDrawerView" */;
+			productName = BottomDrawerView;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = FE55746A2360E5B600B04BF1 /* Project object */;
 }

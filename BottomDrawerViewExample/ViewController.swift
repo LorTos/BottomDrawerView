@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import BottomDrawerView
 
 class ViewController: UIViewController {
 
@@ -14,6 +15,13 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
+    }
+    
+    @IBAction func presentDrawer(_ sender: Any) {
+        let drawer = BottomDrawer(containingView: UIView(), height: 400)
+//        drawer.modalPresentationStyle = .overFullScreen
+//        drawer.modalTransitionStyle = .crossDissolve
+        present(drawer, animated: true, completion: nil)
     }
 }
 

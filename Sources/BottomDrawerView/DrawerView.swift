@@ -113,7 +113,7 @@ public class DrawerView: UIView {
     weak public var delegate: DraggableViewDelegate?
     
     // MARK: - init() and initial setup
-    init(containing childController: UIViewController,
+    public init(containing childController: UIViewController,
          inside parentController: UIViewController,
          totalHeight: CGFloat? = nil,
          draggableViewHeight: CGFloat = 44)
@@ -142,7 +142,7 @@ public class DrawerView: UIView {
         
         backgroundColor = .white
     }
-    init(containing childView: UIView,
+    public init(containing childView: UIView,
          inside parentController: UIViewController,
          totalHeight: CGFloat? = nil,
          draggableViewHeight: CGFloat = 44)
