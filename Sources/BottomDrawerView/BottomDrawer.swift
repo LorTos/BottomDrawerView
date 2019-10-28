@@ -14,18 +14,22 @@ public class BottomDrawer: UIViewController {
     private(set) var drawerView: DrawerView!
     var didPresent = false
     
-    convenience init(containingView childView: UIView, height: CGFloat) {
-        self.init()
+    public init(containingView childView: UIView, height: CGFloat) {
+        super.init(nibName: nil, bundle: nil)
         
         drawerView = DrawerView(containing: childView, inside: self, totalHeight: height, draggableViewHeight: 44)
         commonDraggableViewSetup()
     }
-    convenience init(containingViewController childViewController: UIViewController, height: CGFloat) {
-        self.init()
+    public init(containingViewController childViewController: UIViewController, height: CGFloat) {
+        super.init(nibName: nil, bundle: nil)
         
         drawerView = DrawerView(containing: childViewController, inside: self, totalHeight: height, draggableViewHeight: 44)
         commonDraggableViewSetup()
     }
+    public required init?(coder: NSCoder) {
+        fatalError("init(coder:) not implemented")
+    }
+    
     func commonDraggableViewSetup() {
         drawerView.bottomOffset = tabBarController?.tabBar.bounds.height ?? 0
         drawerView.hidesOnCollapsedPosition = true

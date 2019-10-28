@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "BottomDrawerView"
-  spec.version      = "0.2.0"
+  spec.version      = "0.2.1"
   spec.summary      = "A versatile draggable bottom drawer. CocoaPods library written in swift."
 
   # This description is used to generate tags and improve search results.
