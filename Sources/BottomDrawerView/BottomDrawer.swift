@@ -56,7 +56,7 @@ public class BottomDrawer: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor.black.withAlphaComponent(0.6)
-        dismissTapGesture = UITapGestureRecognizer(target: self, action: #selector(collapseView))
+        dismissTapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissController))
         dismissTapGesture.delegate = self
         view.addGestureRecognizer(dismissTapGesture)
     }
