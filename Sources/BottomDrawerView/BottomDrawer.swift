@@ -82,7 +82,7 @@ extension BottomDrawer: UIGestureRecognizerDelegate {
 }
 
 extension BottomDrawer: DraggableViewDelegate {
-    func draggableView(_ draggableView: DrawerView, didFinishUpdatingPosition position: DVPositionManager.Position) {
+    public func draggableView(_ draggableView: DrawerView, didFinishUpdatingPosition position: DVPositionManager.Position) {
         switch position {
         case .expanded:
             if !didPresent {
