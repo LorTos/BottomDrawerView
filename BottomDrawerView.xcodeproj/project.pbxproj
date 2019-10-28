@@ -7,19 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FE0573F42367293C00DF2BB8 /* DrawerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0573ED2367293C00DF2BB8 /* DrawerView.swift */; };
+		FE0573F52367293C00DF2BB8 /* DVPositionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0573EE2367293C00DF2BB8 /* DVPositionManager.swift */; };
+		FE0573F62367293C00DF2BB8 /* DVContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0573EF2367293C00DF2BB8 /* DVContainerView.swift */; };
+		FE0573F72367293C00DF2BB8 /* BottomDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0573F02367293C00DF2BB8 /* BottomDrawer.swift */; };
+		FE0573F82367294C00DF2BB8 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0573E82367293C00DF2BB8 /* XCTestManifests.swift */; };
+		FE0573F92367294C00DF2BB8 /* BottomDrawerViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0573E92367293C00DF2BB8 /* BottomDrawerViewTests.swift */; };
+		FE0573FA2367294C00DF2BB8 /* LinuxMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0573EA2367293C00DF2BB8 /* LinuxMain.swift */; };
+		FE05740B236729BE00DF2BB8 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE05740A236729BE00DF2BB8 /* Package.swift */; };
 		FE55747D2360E5B600B04BF1 /* BottomDrawerView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE5574732360E5B600B04BF1 /* BottomDrawerView.framework */; };
-		FE5574822360E5B600B04BF1 /* BottomDrawerViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE5574812360E5B600B04BF1 /* BottomDrawerViewTests.swift */; };
-		FE5574842360E5B600B04BF1 /* BottomDrawerView.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5574762360E5B600B04BF1 /* BottomDrawerView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE5574942360E69500B04BF1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE5574932360E69500B04BF1 /* AppDelegate.swift */; };
 		FE5574962360E69500B04BF1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE5574952360E69500B04BF1 /* SceneDelegate.swift */; };
 		FE5574982360E69500B04BF1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE5574972360E69500B04BF1 /* ViewController.swift */; };
 		FE55749B2360E69500B04BF1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FE5574992360E69500B04BF1 /* Main.storyboard */; };
 		FE55749D2360E69800B04BF1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FE55749C2360E69800B04BF1 /* Assets.xcassets */; };
 		FE5574A02360E69800B04BF1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FE55749E2360E69800B04BF1 /* LaunchScreen.storyboard */; };
-		FE5574AA2360E90000B04BF1 /* DVPositionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE5574A62360E90000B04BF1 /* DVPositionManager.swift */; };
-		FE5574AB2360E90000B04BF1 /* DVContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE5574A72360E90000B04BF1 /* DVContainerView.swift */; };
-		FE5574AC2360E90000B04BF1 /* BottomDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE5574A82360E90000B04BF1 /* BottomDrawer.swift */; };
-		FE5574AD2360E90000B04BF1 /* DrawerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE5574A92360E90000B04BF1 /* DrawerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,12 +35,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		FE0573E82367293C00DF2BB8 /* XCTestManifests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
+		FE0573E92367293C00DF2BB8 /* BottomDrawerViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomDrawerViewTests.swift; sourceTree = "<group>"; };
+		FE0573EA2367293C00DF2BB8 /* LinuxMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinuxMain.swift; sourceTree = "<group>"; };
+		FE0573ED2367293C00DF2BB8 /* DrawerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawerView.swift; sourceTree = "<group>"; };
+		FE0573EE2367293C00DF2BB8 /* DVPositionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DVPositionManager.swift; sourceTree = "<group>"; };
+		FE0573EF2367293C00DF2BB8 /* DVContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DVContainerView.swift; sourceTree = "<group>"; };
+		FE0573F02367293C00DF2BB8 /* BottomDrawer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomDrawer.swift; sourceTree = "<group>"; };
+		FE05740A236729BE00DF2BB8 /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		FE5574732360E5B600B04BF1 /* BottomDrawerView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BottomDrawerView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		FE5574762360E5B600B04BF1 /* BottomDrawerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BottomDrawerView.h; sourceTree = "<group>"; };
-		FE5574772360E5B600B04BF1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FE55747C2360E5B600B04BF1 /* BottomDrawerViewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BottomDrawerViewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		FE5574812360E5B600B04BF1 /* BottomDrawerViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomDrawerViewTests.swift; sourceTree = "<group>"; };
-		FE5574832360E5B600B04BF1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FE5574912360E69500B04BF1 /* BottomDrawerViewExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BottomDrawerViewExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE5574932360E69500B04BF1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FE5574952360E69500B04BF1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -47,10 +53,6 @@
 		FE55749C2360E69800B04BF1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FE55749F2360E69800B04BF1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FE5574A12360E69800B04BF1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FE5574A62360E90000B04BF1 /* DVPositionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DVPositionManager.swift; sourceTree = "<group>"; };
-		FE5574A72360E90000B04BF1 /* DVContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DVContainerView.swift; sourceTree = "<group>"; };
-		FE5574A82360E90000B04BF1 /* BottomDrawer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomDrawer.swift; sourceTree = "<group>"; };
-		FE5574A92360E90000B04BF1 /* DrawerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawerView.swift; sourceTree = "<group>"; };
 		FE5574AE2360F63400B04BF1 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		FE5574AF2360F63400B04BF1 /* BottomDrawerView.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = BottomDrawerView.podspec; sourceTree = "<group>"; };
 		FE5574B02360F63400B04BF1 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -82,14 +84,52 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		FE0573E62367293C00DF2BB8 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				FE0573E72367293C00DF2BB8 /* BottomDrawerViewTests */,
+				FE0573EA2367293C00DF2BB8 /* LinuxMain.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		FE0573E72367293C00DF2BB8 /* BottomDrawerViewTests */ = {
+			isa = PBXGroup;
+			children = (
+				FE0573E82367293C00DF2BB8 /* XCTestManifests.swift */,
+				FE0573E92367293C00DF2BB8 /* BottomDrawerViewTests.swift */,
+			);
+			path = BottomDrawerViewTests;
+			sourceTree = "<group>";
+		};
+		FE0573EB2367293C00DF2BB8 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				FE0573EC2367293C00DF2BB8 /* BottomDrawerView */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		FE0573EC2367293C00DF2BB8 /* BottomDrawerView */ = {
+			isa = PBXGroup;
+			children = (
+				FE0573ED2367293C00DF2BB8 /* DrawerView.swift */,
+				FE0573EE2367293C00DF2BB8 /* DVPositionManager.swift */,
+				FE0573EF2367293C00DF2BB8 /* DVContainerView.swift */,
+				FE0573F02367293C00DF2BB8 /* BottomDrawer.swift */,
+			);
+			path = BottomDrawerView;
+			sourceTree = "<group>";
+		};
 		FE5574692360E5B600B04BF1 = {
 			isa = PBXGroup;
 			children = (
+				FE05740A236729BE00DF2BB8 /* Package.swift */,
 				FE5574B02360F63400B04BF1 /* README.md */,
 				FE5574AE2360F63400B04BF1 /* LICENSE */,
 				FE5574AF2360F63400B04BF1 /* BottomDrawerView.podspec */,
-				FE5574752360E5B600B04BF1 /* BottomDrawerView */,
-				FE5574802360E5B600B04BF1 /* BottomDrawerViewTests */,
+				FE0573EB2367293C00DF2BB8 /* Sources */,
+				FE0573E62367293C00DF2BB8 /* Tests */,
 				FE5574922360E69500B04BF1 /* BottomDrawerViewExample */,
 				FE5574742360E5B600B04BF1 /* Products */,
 			);
@@ -103,28 +143,6 @@
 				FE5574912360E69500B04BF1 /* BottomDrawerViewExample.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		FE5574752360E5B600B04BF1 /* BottomDrawerView */ = {
-			isa = PBXGroup;
-			children = (
-				FE5574A82360E90000B04BF1 /* BottomDrawer.swift */,
-				FE5574A92360E90000B04BF1 /* DrawerView.swift */,
-				FE5574A72360E90000B04BF1 /* DVContainerView.swift */,
-				FE5574A62360E90000B04BF1 /* DVPositionManager.swift */,
-				FE5574762360E5B600B04BF1 /* BottomDrawerView.h */,
-				FE5574772360E5B600B04BF1 /* Info.plist */,
-			);
-			path = BottomDrawerView;
-			sourceTree = "<group>";
-		};
-		FE5574802360E5B600B04BF1 /* BottomDrawerViewTests */ = {
-			isa = PBXGroup;
-			children = (
-				FE5574812360E5B600B04BF1 /* BottomDrawerViewTests.swift */,
-				FE5574832360E5B600B04BF1 /* Info.plist */,
-			);
-			path = BottomDrawerViewTests;
 			sourceTree = "<group>";
 		};
 		FE5574922360E69500B04BF1 /* BottomDrawerViewExample */ = {
@@ -148,7 +166,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FE5574842360E5B600B04BF1 /* BottomDrawerView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,10 +299,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FE5574AB2360E90000B04BF1 /* DVContainerView.swift in Sources */,
-				FE5574AC2360E90000B04BF1 /* BottomDrawer.swift in Sources */,
-				FE5574AA2360E90000B04BF1 /* DVPositionManager.swift in Sources */,
-				FE5574AD2360E90000B04BF1 /* DrawerView.swift in Sources */,
+				FE0573F62367293C00DF2BB8 /* DVContainerView.swift in Sources */,
+				FE05740B236729BE00DF2BB8 /* Package.swift in Sources */,
+				FE0573F42367293C00DF2BB8 /* DrawerView.swift in Sources */,
+				FE0573F72367293C00DF2BB8 /* BottomDrawer.swift in Sources */,
+				FE0573F52367293C00DF2BB8 /* DVPositionManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -293,7 +311,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FE5574822360E5B600B04BF1 /* BottomDrawerViewTests.swift in Sources */,
+				FE0573FA2367294C00DF2BB8 /* LinuxMain.swift in Sources */,
+				FE0573F92367294C00DF2BB8 /* BottomDrawerViewTests.swift in Sources */,
+				FE0573F82367294C00DF2BB8 /* XCTestManifests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
