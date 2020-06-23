@@ -9,7 +9,7 @@
 import UIKit
 
 public protocol DraggableViewDelegate: class {
-	func draggableView(_ draggableView: DrawerView, didFinishUpdatingPosition position: DVPositionManager.Position)
+	func draggableView(_ draggableView: DrawerView, didFinishUpdatingPosition position: DVPosition)
 }
 
 public class DrawerView: UIView {
@@ -23,17 +23,18 @@ public class DrawerView: UIView {
 		view.backgroundColor = lineTintColor
 		return view
 	}()
-	private(set) var interactiveView: UIView
-	private(set) var containerView: DVContainerView
+	private(set) var interactiveView: UIView?
+	private(set) var containerView: DVContainerView?
 	
 	private(set) var panGesture: UIPanGestureRecognizer!
-	private(set) var positionManager: DVPositionManager
-	public var currentPosition: DVPositionManager.Position {
-		return positionManager.currentPosition
+	private(set) var positionManager: DVPositionManager?
+	
+	public var currentPosition: DVPosition? {
+		return positionManager?.currentPosition
 	}
 	
 	// MARK: - Properties
-	private(set) var draggableViewHeight: CGFloat
+	private(set) var draggableViewHeight: CGFloat = 50
 	let lineWidth: CGFloat = 32
 	
 	public var isDragEnabled: Bool = true {
@@ -41,32 +42,16 @@ public class DrawerView: UIView {
 			panGesture.isEnabled = isDragEnabled
 		}
 	}
-	public var supportedPositions: Set<DVPositionManager.Position> = [.expanded, .partial, .collapsed] {
+	public var supportedPositions: Set<DVPosition> = [DVPosition.defaultExpanded, DVPosition.defaultPartial, DVPosition.defaultCollapsed] {
 		didSet {
-			positionManager.isPartialPositionEnabled = supportedPositions.contains(.partial)
-		}
-	}
-	public var topOffset: CGFloat {
-		get {
-			return positionManager.topOffset
-		}
-		set {
-			positionManager.topOffset = newValue
-		}
-	}
-	public var bottomOffset: CGFloat {
-		get {
-			positionManager.bottomOffset
-		}
-		set {
-			positionManager.bottomOffset = newValue
+			positionManager?.supportedPositions = supportedPositions
 		}
 	}
 	/// Sets corner radius of draggable view. Defaults to **6**
 	public var cornerRadius: CGFloat = 6 {
 		didSet {
 			layer.cornerRadius = cornerRadius
-			interactiveView.layer.cornerRadius = cornerRadius
+			interactiveView?.layer.cornerRadius = cornerRadius
 		}
 	}
 	public var lineTintColor: UIColor = .lightGray {
@@ -76,24 +61,24 @@ public class DrawerView: UIView {
 	}
 	public var interactiveViewBorderWidth: CGFloat {
 		get {
-			interactiveView.layer.borderWidth
+			interactiveView?.layer.borderWidth ?? 0
 		}
 		set {
-			interactiveView.layer.borderWidth = newValue
+			interactiveView?.layer.borderWidth = newValue
 		}
 	}
 	public var interactiveViewBorderColor: CGColor? {
 		get {
-			interactiveView.layer.borderColor
+			interactiveView?.layer.borderColor
 		}
 		set {
-			interactiveView.layer.borderColor = newValue
+			interactiveView?.layer.borderColor = newValue
 		}
 	}
 	override public var backgroundColor: UIColor? {
 		didSet {
 			layer.backgroundColor = backgroundColor?.cgColor
-			containerView.backgroundColor = backgroundColor
+			containerView?.backgroundColor = backgroundColor
 		}
 	}
 	
@@ -103,66 +88,53 @@ public class DrawerView: UIView {
 	// MARK: - init() and initial setup
 	public init(containing childController: UIViewController,
 					inside parentController: UIViewController,
-					totalHeight: CGFloat = UIScreen.main.bounds.height * 0.8,
-					draggableViewHeight: CGFloat = 44)
+					draggableViewHeight: CGFloat = 50)
 	{
-		positionManager = DVPositionManager(interactiveViewHeight: draggableViewHeight)
-		interactiveView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: parentController.view.bounds.width, height: draggableViewHeight)))
-		containerView = DVContainerView(containing: childController.view, height: totalHeight - draggableViewHeight, topInset: draggableViewHeight)
-		self.draggableViewHeight = draggableViewHeight
-		super.init(frame: CGRect(origin: .zero, size: CGSize(width: parentController.view.bounds.width, height: positionManager.totalHeight)))
-		positionManager.customHeight = totalHeight
-		self.bottomOffset = parentController.view.safeAreaInsets.bottom
-		
-		setupInteractiveView()
-		setupContainerView()
-		
-		parentController.view.addSubview(self)
-		heightAnchor.constraint(equalToConstant: frame.height).isActive = true
-		leadingAnchor.constraint(equalTo: parentController.view.leadingAnchor).isActive = true
-		trailingAnchor.constraint(equalTo: parentController.view.trailingAnchor).isActive = true
-		bottomAnchor.constraint(equalTo: parentController.view.bottomAnchor, constant: 0).isActive = true
+		super.init(frame: CGRect.zero)
+		commonInit(draggableViewHeight: draggableViewHeight, childView: childController.view, parentController: parentController)
 		parentController.addChild(childController)
 		childController.didMove(toParent: parentController)
-		
-		setRoundedCornersAndShadow()
-		setPosition(to: .expanded, animated: false)
-		
-		backgroundColor = .white
 	}
 	public init(containing childView: UIView,
 					inside parentController: UIViewController,
-					totalHeight: CGFloat = UIScreen.main.bounds.height * 0.8,
-					draggableViewHeight: CGFloat = 44)
+					draggableViewHeight: CGFloat = 50)
 	{
-		positionManager = DVPositionManager(interactiveViewHeight: draggableViewHeight)
-		interactiveView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: parentController.view.bounds.width, height: draggableViewHeight)))
-		containerView = DVContainerView(containing: childView, height: positionManager.totalHeight - draggableViewHeight, topInset: draggableViewHeight)
-		self.draggableViewHeight = draggableViewHeight
-		super.init(frame: CGRect(origin: .zero, size: CGSize(width: parentController.view.bounds.width, height: positionManager.totalHeight)))
-		positionManager.customHeight = totalHeight
-		self.bottomOffset = parentController.view.safeAreaInsets.bottom
-		
-		setupInteractiveView()
-		setupContainerView()
-		
-		parentController.view.addSubview(self)
-		heightAnchor.constraint(equalToConstant: frame.height).isActive = true
-		leadingAnchor.constraint(equalTo: parentController.view.leadingAnchor).isActive = true
-		trailingAnchor.constraint(equalTo: parentController.view.trailingAnchor).isActive = true
-		bottomAnchor.constraint(equalTo: parentController.view.bottomAnchor, constant: 0).isActive = true
-		
-		setRoundedCornersAndShadow()
-		
-		setPosition(to: .expanded, animated: false)
-		backgroundColor = .white
+		super.init(frame: CGRect.zero)
+		commonInit(draggableViewHeight: draggableViewHeight, childView: childView, parentController: parentController)
 	}
 	required init?(coder aDecoder: NSCoder) {
 		fatalError("init(:coder) not implemented")
 	}
+	private func commonInit(draggableViewHeight: CGFloat, childView: UIView, parentController: UIViewController) {
+		self.draggableViewHeight = draggableViewHeight
+		let totalHeight = DVPositionManager.height(for: supportedPositions.max() ?? DVPosition.defaultExpanded)
+		positionManager = DVPositionManager(interactiveViewHeight: draggableViewHeight)
+		interactiveView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: parentController.view.bounds.width, height: draggableViewHeight)))
+		containerView = DVContainerView(containing: childView, height: totalHeight - draggableViewHeight, topInset: draggableViewHeight)
+		
+		setupInteractiveView()
+		setupContainerView()
+		
+		parentController.view.addSubview(self)
+		leadingAnchor.constraint(equalTo: parentController.view.leadingAnchor).isActive = true
+		trailingAnchor.constraint(equalTo: parentController.view.trailingAnchor).isActive = true
+		
+		setRoundedCornersAndShadow()
+		setPosition(to: supportedPositions.max() ?? DVPosition.defaultExpanded, animated: false)
+		backgroundColor = .white
+		addLandscapeNotification()
+	}
 	
 	
-	func setRoundedCornersAndShadow() {
+	deinit {
+		NotificationCenter.default.removeObserver(self, name: UIDevice.orientationDidChangeNotification, object: nil)
+	}
+	
+	private func addLandscapeNotification() {
+		NotificationCenter.default.addObserver(self, selector: #selector(didChangeDeviceOrientation), name: UIDevice.orientationDidChangeNotification, object: nil)
+	}
+	
+	private func setRoundedCornersAndShadow() {
 		layer.cornerRadius = cornerRadius
 		layer.maskedCorners = CACornerMask(arrayLiteral: [.layerMinXMinYCorner, .layerMaxXMinYCorner])
 		layer.masksToBounds = false
@@ -173,6 +145,7 @@ public class DrawerView: UIView {
 	}
 	
 	func setupInteractiveView() {
+		guard let interactiveView = interactiveView else { return }
 		addSubview(interactiveView)
 		
 		interactiveView.layer.borderColor = UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1).cgColor
@@ -180,13 +153,15 @@ public class DrawerView: UIView {
 		interactiveView.layer.maskedCorners = CACornerMask(arrayLiteral: [.layerMinXMinYCorner, .layerMaxXMinYCorner])
 		interactiveView.layer.cornerRadius = cornerRadius
 		
+		interactiveView.translatesAutoresizingMaskIntoConstraints = false
 		interactiveView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-		interactiveView.topAnchor.constraint(equalTo: topAnchor).isActive = true
 		interactiveView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+		interactiveView.topAnchor.constraint(equalTo: topAnchor).isActive = true
 		interactiveView.heightAnchor.constraint(equalToConstant: draggableViewHeight).isActive = true
 		
 		func setupLineView() {
 			interactiveView.addSubview(lineView)
+			lineView.translatesAutoresizingMaskIntoConstraints = false
 			lineView.constraints.forEach({ lineView.removeConstraint($0) })
 			constraints.forEach({
 				if $0.firstItem === lineView || $0.secondItem === lineView {
@@ -208,7 +183,9 @@ public class DrawerView: UIView {
 	}
 	
 	func setupContainerView() {
+		guard let containerView = containerView, let interactiveView = interactiveView else { return }
 		addSubview(containerView)
+		containerView.translatesAutoresizingMaskIntoConstraints = false
 		containerView.topAnchor.constraint(equalTo: interactiveView.bottomAnchor).isActive = true
 		containerView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor).isActive = true
 		containerView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive = true
@@ -221,8 +198,14 @@ public class DrawerView: UIView {
 		layer.shadowPath = UIBezierPath(roundedRect: layer.bounds, cornerRadius: layer.cornerRadius).cgPath
 	}
 	
+	@objc private func didChangeDeviceOrientation() {
+		setPosition(to: currentPosition ?? DVPosition.defaultExpanded, animated: false)
+	}
+	
 	// MARK: - Functions
-	public func setPosition(to position: DVPositionManager.Position, animated: Bool, completion: (() -> Void)? = nil) {
+	public func setPosition(to position: DVPosition, animated: Bool, completion: (() -> Void)? = nil) {
+		guard let positionManager = positionManager else { return }
+		
 		let oldFrame = positionManager.frame(forPosition: positionManager.currentPosition)
 		positionManager.currentPosition = position
 		let fullFrame = positionManager.frame(forPosition: position)
@@ -249,6 +232,7 @@ public class DrawerView: UIView {
 	}
 	
 	func handlePan(_ gesture: UIPanGestureRecognizer) {
+		guard let positionManager = positionManager, let currentPosition = currentPosition else { return }
 		func applyTranslation(_ yTranslation: CGFloat) {
 			let transform = CGAffineTransform(translationX: 0, y: yTranslation)
 			let newFrame = frame.applying(transform)
@@ -268,29 +252,33 @@ public class DrawerView: UIView {
 			let velocity = gesture.velocity(in: self).y
 			let velocityThreshold: CGFloat = 2000
 			let slowVelocityThreshold: CGFloat = 400
+			let max = supportedPositions.max()
+			let min = supportedPositions.min()
 			if velocity > velocityThreshold {
-				setPosition(to: .collapsed, animated: true)
+				setPosition(to: min ?? DVPosition.defaultCollapsed, animated: true)
 			} else if velocity < -velocityThreshold {
-				setPosition(to: .expanded, animated: true)
+				setPosition(to: max ?? DVPosition.defaultExpanded, animated: true)
 			} else {
 				switch currentPosition {
 				case .partial:
 					if velocity > slowVelocityThreshold {
-						setPosition(to: .collapsed, animated: true)
+						setPosition(to: min ?? DVPosition.defaultCollapsed, animated: true)
 					} else if velocity < -slowVelocityThreshold {
-						setPosition(to: .expanded, animated: true)
+						setPosition(to: max ?? DVPosition.defaultExpanded, animated: true)
 					} else {
 						setPosition(to: positionManager.closestPosition(fromPoint: frame.origin), animated: true)
 					}
 				case .collapsed:
-					if velocity < slowVelocityThreshold {
-						setPosition(to: supportedPositions.contains(.partial) ? .partial : .expanded, animated: true)
+					if velocity < -slowVelocityThreshold {
+						let partial = supportedPositions.first(where: { $0 == .partial(/* Not important for equality */0) })
+						setPosition(to: partial ?? supportedPositions.max() ?? DVPosition.defaultExpanded, animated: true)
 					} else {
 						setPosition(to: positionManager.closestPosition(fromPoint: frame.origin), animated: true)
 					}
 				case .expanded:
 					if velocity > slowVelocityThreshold {
-						setPosition(to: supportedPositions.contains(.partial) ? .partial : .collapsed, animated: true)
+						let partial = supportedPositions.first(where: { $0 == .partial(/* Not important for equality */0) })
+						setPosition(to: partial ?? supportedPositions.min() ?? DVPosition.defaultCollapsed, animated: true)
 					} else {
 						setPosition(to: positionManager.closestPosition(fromPoint: frame.origin), animated: true)
 					}

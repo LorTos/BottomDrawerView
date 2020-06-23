@@ -8,59 +8,22 @@
 
 import UIKit
 
-public class DVPositionManager {
-	
-	public enum Position: Comparable {
-		case expanded, partial, collapsed
-		
-		public static func < (lhs: DVPositionManager.Position, rhs: DVPositionManager.Position) -> Bool {
-			switch (lhs, rhs) {
-			case (.collapsed, .partial), (.partial, .expanded), (.collapsed, .expanded): return true
-			case (.partial, .collapsed), (.expanded, .collapsed), (.expanded, .partial): return false
-			default:
-				return false
-			}
-		}
-	}
-	
-	/**
-	A CGFloat value that indicates the distance from the status bar.
-	
-	The default value for this parameter is **0**.
-	*/
-	var topOffset: CGFloat
-	
-	/**
-	A CGFloat value that indicates the distance from the bottom safe area.
-	
-	The default value for this parameter is **0**.
-	*/
-	var bottomOffset: CGFloat
-	
+class DVPositionManager {
 	/**
 	A CGFloat value that indicates draggable view height, so that it clears the bottom of the view.
 	*/
 	private var dragViewOffset: CGFloat
 	
-	/**
-	A CGFloat value that sets the height of the entire view.
-	
-	The default value for this parameter is **nil**. If set, the *topOffset* parameter will be ignored.
-	*/
-	var customHeight: CGFloat?
-	
 	var maxMovement: CGFloat {
-		let maxHeight = frame(forPosition: .expanded).height
-		let minHeight = frame(forPosition: .collapsed).height
+		let maxHeight = frame(forPosition: supportedPositions.max() ?? DVPosition.defaultExpanded).height
+		let minHeight = frame(forPosition: supportedPositions.min() ?? DVPosition.defaultCollapsed).height
 		return abs(maxHeight -  minHeight)
 	}
 	
 	/**
-	A Boolean value that determines whether the partial position is enabled or not.
-	
-	The default value for this parameter is **true**.
+
 	*/
-	var isPartialPositionEnabled = true
+	var supportedPositions: Set<DVPosition> = [DVPosition.defaultExpanded, DVPosition.defaultPartial, DVPosition.defaultCollapsed]
 	
 	/**
 	A Boolean value that determines whether on the *.collapsed* position the view is completely hidden.
@@ -68,16 +31,16 @@ public class DVPositionManager {
 	The default value for this parameter is **false**. If set to true, the *bottomOffset* parameter will be ignored.
 	*/
 	
-	private lazy var screenHeight: CGFloat = UIScreen.main.bounds.height
-	private lazy var screenWidth: CGFloat = UIScreen.main.bounds.width
-	private var bottomSafeArea: CGFloat {
-		return UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
-	}
+	private var screenHeight: CGFloat { UIScreen.main.bounds.height }
+	private var screenWidth: CGFloat { UIScreen.main.bounds.width }
 	/**
 	A CGFloat value indicating the height of the view.
 	*/
 	var totalHeight: CGFloat {
-		customHeight ?? (screenHeight - UIApplication.shared.statusBarFrame.height - topOffset)
+		switch supportedPositions.max() ?? DVPosition.defaultExpanded {
+		case .expanded(let p), .partial(let p), .collapsed(let p):
+			return screenHeight / p
+		}
 	}
 	
 	/**
@@ -88,12 +51,10 @@ public class DVPositionManager {
 	- **.partial**
 	- **.collapsed**
 	*/
-	var currentPosition: Position = .expanded
+	var currentPosition: DVPosition = DVPosition.defaultExpanded
 	
-	init(topOffset: CGFloat = 0, bottomOffset: CGFloat = 0, interactiveViewHeight: CGFloat) {
+	init(interactiveViewHeight: CGFloat) {
 		dragViewOffset = interactiveViewHeight
-		self.topOffset = topOffset
-		self.bottomOffset = bottomOffset
 	}
 	
 	/**
@@ -102,18 +63,23 @@ public class DVPositionManager {
 	- Parameter position: The position of the frame you want to get.
 	- Returns: A CGRect indicating the frame of the view in that position.
 	*/
-	func frame(forPosition position: Position) -> CGRect {
-		let frameSize = CGSize(width: screenWidth, height: totalHeight)
-		var yPosition: CGFloat
+	func frame(forPosition position: DVPosition) -> CGRect {
+		CGRect(origin: CGPoint(x: 0, y: referencePointY(forPosition: position)),
+				 size: CGSize(width: screenWidth, height: totalHeight))
+	}
+	
+	func referencePointY(forPosition position: DVPosition) -> CGFloat {
 		switch position {
-		case .expanded:
-			yPosition = screenHeight - frameSize.height
-		case .partial:
-			yPosition = isPartialPositionEnabled ? screenHeight - (frameSize.height / 2) : screenHeight - frameSize.height
-		case .collapsed:
-			yPosition = screenHeight - bottomOffset - bottomSafeArea - dragViewOffset
+		case .expanded(let p), .partial(let p), .collapsed(let p):
+			return screenHeight - (screenHeight * p)
 		}
-		return CGRect(origin: CGPoint(x: 0, y: yPosition), size: frameSize)
+	}
+	
+	static func height(for position: DVPosition) -> CGFloat {
+		switch position {
+		case .expanded(let percent), .collapsed(let percent), .partial(let percent):
+			return UIScreen.main.bounds.height * percent
+		}
 	}
 	
 	/**
@@ -122,35 +88,19 @@ public class DVPositionManager {
 	- Parameter point: The point from which you want to find the position.
 	- Returns: The **Position** closest to the point.
 	*/
-	func closestPosition(fromPoint point: CGPoint) -> Position {
-		func referencePointY(forState state: DVPositionManager.Position) -> CGFloat {
-			switch state {
-			case .expanded:
-				return screenHeight - totalHeight
-			case .partial:
-				return screenHeight - (totalHeight / 2)
-			case .collapsed:
-				return screenHeight - bottomOffset - bottomSafeArea
+	func closestPosition(fromPoint point: CGPoint) -> DVPosition {
+		var closest: DVPosition?
+		supportedPositions.forEach {
+			if let currentClosest = closest {
+				let current = abs(point.y - referencePointY(forPosition: currentClosest))
+				let new = abs(point.y - referencePointY(forPosition: $0))
+				if new < current {
+					closest = $0
+				}
+			} else {
+				closest = $0
 			}
 		}
-		
-		var minDistance: CGFloat
-		let distanceFromExpanded: CGFloat = abs(point.y - referencePointY(forState: .expanded))
-		let distanceFromCollapsed: CGFloat = abs(point.y - referencePointY(forState: .collapsed))
-		var distanceFromPartial: CGFloat?
-		if isPartialPositionEnabled {
-			distanceFromPartial = abs(point.y - referencePointY(forState: .partial))
-			minDistance = min(distanceFromPartial!, distanceFromCollapsed, distanceFromExpanded)
-		} else {
-			minDistance = min(distanceFromCollapsed, distanceFromExpanded)
-		}
-		
-		
-		switch minDistance {
-		case distanceFromExpanded: return .expanded
-		case distanceFromCollapsed: return .collapsed
-		case distanceFromPartial: return .partial
-		default: return .collapsed
-		}
+		return closest ?? DVPosition.defaultExpanded
 	}
 }

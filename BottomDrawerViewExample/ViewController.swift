@@ -10,18 +10,17 @@ import UIKit
 import BottomDrawerView
 
 class ViewController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        
-    }
-    
-    @IBAction func presentDrawer(_ sender: Any) {
-        let drawer = BottomDrawer(containingView: UIView(), height: 400)
-//        drawer.modalPresentationStyle = .overFullScreen
-//        drawer.modalTransitionStyle = .crossDissolve
-        present(drawer, animated: true, completion: nil)
-    }
+	
+	private lazy var bottomDrawer: DrawerView = {
+		let drawer = DrawerView(containing: UIView(), inside: self, draggableViewHeight: 50)
+		drawer.supportedPositions = [.expanded(0.8), .partial(0.4)]
+		return drawer
+	}()
+	
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		
+		view.addSubview(bottomDrawer)
+	}
 }
 
