@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "BottomDrawerView"
-  spec.version      = "0.3.2"
+  spec.version      = "0.3.1"
   spec.summary      = "A versatile draggable bottom drawer. CocoaPods library written in swift."
 
   # This description is used to generate tags and improve search results.
@@ -59,7 +59,7 @@ Pod::Spec.new do |spec|
   #  the deployment target. You can optionally include the target after the platform.
   #
 
-  spec.platform     = :ios, "10.0"
+  spec.platform     = :ios, "11.0"
   spec.swift_versions = ["4.2", "5.0", "5.1"]
 
   #  When using multiple platforms
