@@ -10,7 +10,6 @@
 		FE0573F42367293C00DF2BB8 /* DrawerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0573ED2367293C00DF2BB8 /* DrawerView.swift */; };
 		FE0573F52367293C00DF2BB8 /* DVPositionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0573EE2367293C00DF2BB8 /* DVPositionManager.swift */; };
 		FE0573F62367293C00DF2BB8 /* DVContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0573EF2367293C00DF2BB8 /* DVContainerView.swift */; };
-		FE0573F72367293C00DF2BB8 /* BottomDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0573F02367293C00DF2BB8 /* BottomDrawer.swift */; };
 		FE0573F82367294C00DF2BB8 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0573E82367293C00DF2BB8 /* XCTestManifests.swift */; };
 		FE0573F92367294C00DF2BB8 /* BottomDrawerViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0573E92367293C00DF2BB8 /* BottomDrawerViewTests.swift */; };
 		FE0573FA2367294C00DF2BB8 /* LinuxMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0573EA2367293C00DF2BB8 /* LinuxMain.swift */; };
@@ -43,7 +42,6 @@
 		FE0573ED2367293C00DF2BB8 /* DrawerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawerView.swift; sourceTree = "<group>"; };
 		FE0573EE2367293C00DF2BB8 /* DVPositionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DVPositionManager.swift; sourceTree = "<group>"; };
 		FE0573EF2367293C00DF2BB8 /* DVContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DVContainerView.swift; sourceTree = "<group>"; };
-		FE0573F02367293C00DF2BB8 /* BottomDrawer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomDrawer.swift; sourceTree = "<group>"; };
 		FE05740A236729BE00DF2BB8 /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		FE05743123672F9000DF2BB8 /* OtherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherViewController.swift; sourceTree = "<group>"; };
 		FE5574732360E5B600B04BF1 /* BottomDrawerView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BottomDrawerView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -120,7 +118,6 @@
 				FE0573ED2367293C00DF2BB8 /* DrawerView.swift */,
 				FE0573EE2367293C00DF2BB8 /* DVPositionManager.swift */,
 				FE0573EF2367293C00DF2BB8 /* DVContainerView.swift */,
-				FE0573F02367293C00DF2BB8 /* BottomDrawer.swift */,
 			);
 			path = BottomDrawerView;
 			sourceTree = "<group>";
@@ -313,7 +310,6 @@
 				FE0573F62367293C00DF2BB8 /* DVContainerView.swift in Sources */,
 				FE05740B236729BE00DF2BB8 /* Package.swift in Sources */,
 				FE0573F42367293C00DF2BB8 /* DrawerView.swift in Sources */,
-				FE0573F72367293C00DF2BB8 /* BottomDrawer.swift in Sources */,
 				FE0573F52367293C00DF2BB8 /* DVPositionManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
