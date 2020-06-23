@@ -39,7 +39,7 @@ class DVPositionManager {
 	var totalHeight: CGFloat {
 		switch supportedPositions.max() ?? DVPosition.defaultExpanded {
 		case .expanded(let p), .partial(let p), .collapsed(let p):
-			return screenHeight / p
+			return screenHeight * p
 		}
 	}
 	
