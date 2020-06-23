@@ -13,7 +13,7 @@ class ViewController: UIViewController {
 	
 	private lazy var bottomDrawer: DrawerView = {
 		let drawer = DrawerView(containing: UIView(), inside: self, draggableViewHeight: 50)
-		drawer.supportedPositions = [.expanded(0.8), .partial(0.4)]
+		drawer.supportedPositions = [.expanded(0.8), .partial(0.8), .collapsed(0.2)]
 		return drawer
 	}()
 	
