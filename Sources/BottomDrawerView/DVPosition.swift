@@ -10,7 +10,7 @@ import Foundation
 import CoreGraphics
 
 public struct DVPosition {
-	let percent: CGFloat
+	public let percent: CGFloat
 	
 	public init(_ value: CGFloat) {
 		percent = value

@@ -9,7 +9,7 @@
 Pod::Spec.new do |spec|
 
   spec.name         = "BottomDrawerView"
-  spec.version      = "0.4.0"
+  spec.version      = "0.4.1"
   spec.summary      = "A versatile draggable bottom drawer. CocoaPods library written in swift."
 
   spec.description  = <<-DESC
@@ -20,7 +20,7 @@ Pod::Spec.new do |spec|
   spec.license      = { :type => "MIT", :file => "LICENSE" }
   spec.author             = "LorTos"
   spec.platform     = :ios, "11.0"
-  spec.swift_versions = ["4.2", "5.0", "5.1"]
+  spec.swift_versions = ["4.2", "5.0", "5.1", "5.2"]
   
   spec.source       = { :git => "https://github.com/LorTos/BottomDrawerView.git", :tag => "#{spec.version}" }
   spec.source_files  = "Sources/BottomDrawerView/*.swift"
