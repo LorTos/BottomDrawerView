@@ -8,7 +8,15 @@
 
 import UIKit
 
+protocol DVPositionManagerDelegate: class {
+	func updateDrawerFrame(byAmount amount: CGFloat, gesture: UIPanGestureRecognizer)
+	func updateDrawerPosition(_ position: DVPosition)
+}
+
 class DVPositionManager {
+	
+	weak var delegate: DVPositionManagerDelegate?
+	
 	/**
 	A CGFloat value that indicates draggable view height, so that it clears the bottom of the view.
 	*/
@@ -20,16 +28,7 @@ class DVPositionManager {
 		return abs(maxHeight -  minHeight)
 	}
 	
-	/**
-
-	*/
 	var supportedPositions: Set<DVPosition> = [DVPosition.defaultExpanded, DVPosition.defaultPartial, DVPosition.defaultCollapsed]
-	
-	/**
-	A Boolean value that determines whether on the *.collapsed* position the view is completely hidden.
-	
-	The default value for this parameter is **false**. If set to true, the *bottomOffset* parameter will be ignored.
-	*/
 	
 	private var screenHeight: CGFloat { UIScreen.main.bounds.height }
 	private var screenWidth: CGFloat { UIScreen.main.bounds.width }
@@ -37,20 +36,10 @@ class DVPositionManager {
 	A CGFloat value indicating the height of the view.
 	*/
 	var totalHeight: CGFloat {
-		switch supportedPositions.max() ?? DVPosition.defaultExpanded {
-		case .expanded(let p), .partial(let p), .collapsed(let p):
-			return screenHeight * p
-		}
+		let maxExpanded = supportedPositions.max() ?? DVPosition.defaultExpanded
+		return screenHeight * maxExpanded.percent
 	}
 	
-	/**
-	Indicates the current Position of the view.
-	
-	Possible values are:
-	- **.expanded**
-	- **.partial**
-	- **.collapsed**
-	*/
 	var currentPosition: DVPosition = DVPosition.defaultExpanded
 	
 	init(interactiveViewHeight: CGFloat) {
@@ -69,17 +58,11 @@ class DVPositionManager {
 	}
 	
 	func referencePointY(forPosition position: DVPosition) -> CGFloat {
-		switch position {
-		case .expanded(let p), .partial(let p), .collapsed(let p):
-			return screenHeight - (screenHeight * p)
-		}
+		return screenHeight - (screenHeight * position.percent)
 	}
 	
 	static func height(for position: DVPosition) -> CGFloat {
-		switch position {
-		case .expanded(let percent), .collapsed(let percent), .partial(let percent):
-			return UIScreen.main.bounds.height * percent
-		}
+		return UIScreen.main.bounds.height * position.percent
 	}
 	
 	/**
@@ -102,5 +85,59 @@ class DVPositionManager {
 			}
 		}
 		return closest ?? DVPosition.defaultExpanded
+	}
+	
+	func nextPosition() -> DVPosition {
+		let sortedPositions = supportedPositions.sorted()
+		if let currentIndex = sortedPositions.firstIndex(of: currentPosition) {
+			let next = currentIndex.advanced(by: 1)
+			if next < sortedPositions.count {
+				return sortedPositions[next]
+			}
+		}
+		return currentPosition
+	}
+	
+	func previousPosition() -> DVPosition {
+		let sortedPositions = supportedPositions.sorted()
+		if let currentIndex = sortedPositions.firstIndex(of: currentPosition) {
+			let previous = currentIndex.advanced(by: -1)
+			if previous >= 0 {
+				return sortedPositions[previous]
+			}
+		}
+		return currentPosition
+	}
+}
+
+extension DVPositionManager: DVInteractiveViewDelegate {
+	func didPan(_ gesture: UIPanGestureRecognizer) {
+		guard let gestureView = gesture.view else { return }
+		switch gesture.state {
+		case .began, .changed:
+			let translationAmount = gesture.translation(in: gestureView.superview ?? gestureView).y
+			delegate?.updateDrawerFrame(byAmount: translationAmount, gesture: gesture)
+		case .ended, .cancelled:
+			let velocity = gesture.velocity(in: gestureView.superview ?? gestureView).y
+			let velocityThreshold: CGFloat = 2000
+			let slowVelocityThreshold: CGFloat = 400
+			
+			var updatedPosition = currentPosition
+			if velocity > velocityThreshold {
+				updatedPosition = supportedPositions.min() ?? DVPosition.defaultCollapsed
+			} else if velocity < -velocityThreshold {
+				updatedPosition = supportedPositions.max() ?? DVPosition.defaultExpanded
+			} else {
+				if velocity > slowVelocityThreshold {
+					updatedPosition = previousPosition()
+				} else if velocity < -slowVelocityThreshold {
+					updatedPosition = nextPosition()
+				} else {
+					updatedPosition = closestPosition(fromPoint: gestureView.frame.origin)
+				}
+			}
+			delegate?.updateDrawerPosition(updatedPosition)
+		default: return
+		}
 	}
 }
