@@ -187,8 +187,8 @@ extension DrawerView: DVPositionManagerDelegate {
 		if isInsideLimit {
 			frame = newFrame
 			gesture.setTranslation(.zero, in: self)
+			delegate?.draggableView(self, didDragByAmount: amount)
 		}
-		delegate?.draggableView(self, didDragByAmount: amount)
 	}
 	
 	func updateDrawerPosition(_ position: DVPosition) {

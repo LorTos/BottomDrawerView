@@ -9,7 +9,7 @@
 Pod::Spec.new do |spec|
 
   spec.name         = "BottomDrawerView"
-  spec.version      = "0.4.2"
+  spec.version      = "0.4.3"
   spec.summary      = "A versatile draggable bottom drawer. CocoaPods library written in swift."
 
   spec.description  = <<-DESC
