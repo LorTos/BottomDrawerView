@@ -188,6 +188,7 @@ extension DrawerView: DVPositionManagerDelegate {
 			frame = newFrame
 			gesture.setTranslation(.zero, in: self)
 		}
+		delegate?.draggableView(self, didDragByAmount: amount)
 	}
 	
 	func updateDrawerPosition(_ position: DVPosition) {
