@@ -25,6 +25,10 @@ public class DrawerView: UIView {
 		return positionManager?.currentPosition
 	}
 	
+	private lazy var backgroundPanGesture: UIPanGestureRecognizer = {
+		return UIPanGestureRecognizer(target: self, action: #selector(panned))
+	}()
+	
 	// MARK: - Properties
 	public var supportedPositions: Set<DVPosition> = [DVPosition.defaultExpanded, DVPosition.defaultPartial, DVPosition.defaultCollapsed] {
 		didSet {
@@ -82,6 +86,7 @@ public class DrawerView: UIView {
 		setPosition(to: supportedPositions.min() ?? DVPosition.defaultCollapsed, animated: false)
 		backgroundColor = .white
 		
+		addGestureRecognizer(backgroundPanGesture)
 		NotificationCenter.default.addObserver(self, selector: #selector(didChangeDeviceOrientation), name: UIDevice.orientationDidChangeNotification, object: nil)
 	}
 	
@@ -174,6 +179,10 @@ public class DrawerView: UIView {
 	
 	public func addSubviewToInteractiveView(_ subview: UIView, aligned: InteractiveViewChildAlignment) {
 		interactiveView?.addChildView(subview, alignment: aligned)
+	}
+	
+	@objc private func panned(_ sender: UIPanGestureRecognizer) {
+		positionManager?.didPan(sender)
 	}
 }
 
