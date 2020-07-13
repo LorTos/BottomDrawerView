@@ -1,26 +1,28 @@
 //
-//  File.swift
-//  
+//  DVHeaderView.swift
+//  BottomDrawerProject
 //
 //  Created by Lorenzo Toscani De Col on 03/07/2020.
 //
 
 import UIKit
 
-protocol DVInteractiveViewDelegate: class {
+protocol DVHeaderViewDelegate: class {
 	func didPan(_ gesture: UIPanGestureRecognizer)
+	func didTapOnHeader(_ gesture: UITapGestureRecognizer)
 }
 
-public enum InteractiveViewChildAlignment {
+public enum HeaderViewChildAlignment {
 	case left(margin: CGFloat),
 		  center,
 		  right(margin: CGFloat),
 		  fill
 }
 
-class DVInteractiveView: UIView {
+class DVHeaderView: UIView {
 	
 	private(set) var panGesture: UIPanGestureRecognizer!
+	private(set) var tapGesture: UITapGestureRecognizer!
 	
 	var isDragEnabled: Bool = true {
 		didSet {
@@ -28,7 +30,7 @@ class DVInteractiveView: UIView {
 		}
 	}
 	
-	weak var delegate: DVInteractiveViewDelegate?
+	weak var delegate: DVHeaderViewDelegate?
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -44,15 +46,21 @@ class DVInteractiveView: UIView {
 		
 		layer.maskedCorners = CACornerMask(arrayLiteral: [.layerMinXMinYCorner, .layerMaxXMinYCorner])
 		
-		panGesture = UIPanGestureRecognizer(target: self, action: #selector(isPanning(_:)))
+		panGesture = UIPanGestureRecognizer(target: self, action: #selector(isPanning))
+		tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapped))
 		addGestureRecognizer(panGesture)
+		addGestureRecognizer(tapGesture)
 	}
 	
 	@objc private func isPanning(_ gesture: UIPanGestureRecognizer) {
 		delegate?.didPan(gesture)
 	}
 	
-	func addChildView(_ view: UIView, alignment: InteractiveViewChildAlignment) {
+	@objc private func tapped(_ gesture: UITapGestureRecognizer) {
+		delegate?.didTapOnHeader(gesture)
+	}
+	
+	func addChildView(_ view: UIView, alignment: HeaderViewChildAlignment) {
 		view.translatesAutoresizingMaskIntoConstraints = false
 		view.setContentHuggingPriority(.defaultHigh, for: .vertical)
 		view.setContentHuggingPriority(.defaultHigh, for: .horizontal)
@@ -62,9 +70,9 @@ class DVInteractiveView: UIView {
 		var constraints: [NSLayoutConstraint] = []
 		let vCenter = view.centerYAnchor.constraint(equalTo: centerYAnchor)
 		vCenter.priority = .required
-		let top = view.topAnchor.constraint(greaterThanOrEqualTo: topAnchor)
+		let top = view.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: 10)
 		top.priority = .defaultHigh
-		let bottom = view.bottomAnchor.constraint(greaterThanOrEqualTo: bottomAnchor)
+		let bottom = view.bottomAnchor.constraint(greaterThanOrEqualTo: bottomAnchor, constant: -10)
 		bottom.priority = .defaultHigh
 		constraints += [vCenter, top, bottom]
 		switch alignment {

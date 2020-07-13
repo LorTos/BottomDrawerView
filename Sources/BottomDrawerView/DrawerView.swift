@@ -18,7 +18,7 @@ public class DrawerView: UIView {
 	// MARK: - Variables
 	
 	private(set) var positionManager: DVPositionManager?
-	private(set) var interactiveView: DVInteractiveView?
+	private(set) var headerView: DVHeaderView?
 	private(set) var containerView: DVContainerView?
 	
 	public var currentPosition: DVPosition? {
@@ -37,10 +37,16 @@ public class DrawerView: UIView {
 		}
 	}
 	
+	public var tapToExpand: Bool = false {
+		didSet {
+			positionManager?.tapToExpand = tapToExpand
+		}
+	}
+	
 	public var cornerRadius: CGFloat = 6 {
 		didSet {
 			layer.cornerRadius = cornerRadius
-			interactiveView?.layer.cornerRadius = cornerRadius
+			headerView?.layer.cornerRadius = cornerRadius
 		}
 	}
 	override public var backgroundColor: UIColor? {
@@ -56,26 +62,26 @@ public class DrawerView: UIView {
 	// MARK: - init() and initial setup
 	public init(containing childController: UIViewController,
 					inside parentController: UIViewController,
-					draggableViewHeight: CGFloat = 50)
+					headerViewHeight: CGFloat = 50)
 	{
 		super.init(frame: CGRect.zero)
-		commonInit(draggableViewHeight: draggableViewHeight, childView: childController.view, parentController: parentController)
+		commonInit(headerViewHeight: headerViewHeight, childView: childController.view, parentController: parentController)
 		parentController.addChild(childController)
 		childController.didMove(toParent: parentController)
 	}
 	public init(containing childView: UIView,
 					inside parentController: UIViewController,
-					draggableViewHeight: CGFloat = 50)
+					headerViewHeight: CGFloat = 50)
 	{
 		super.init(frame: CGRect.zero)
-		commonInit(draggableViewHeight: draggableViewHeight, childView: childView, parentController: parentController)
+		commonInit(headerViewHeight: headerViewHeight, childView: childView, parentController: parentController)
 	}
 	required init?(coder aDecoder: NSCoder) {
 		fatalError("init(:coder) not implemented")
 	}
-	private func commonInit(draggableViewHeight: CGFloat, childView: UIView, parentController: UIViewController) {
-		setupPositionManager(height: draggableViewHeight)
-		setupInteractiveView(frame: CGRect(origin: .zero, size: CGSize(width: parentController.view.bounds.width, height: draggableViewHeight)))
+	private func commonInit(headerViewHeight: CGFloat, childView: UIView, parentController: UIViewController) {
+		setupPositionManager(height: headerViewHeight)
+		setupHeaderView(frame: CGRect(origin: .zero, size: CGSize(width: parentController.view.bounds.width, height: headerViewHeight)))
 		setupContainerView(child: childView)
 		
 		parentController.view.addSubview(self)
@@ -90,19 +96,15 @@ public class DrawerView: UIView {
 		NotificationCenter.default.addObserver(self, selector: #selector(didChangeDeviceOrientation), name: UIDevice.orientationDidChangeNotification, object: nil)
 	}
 	
-	deinit {
-		NotificationCenter.default.removeObserver(self, name: UIDevice.orientationDidChangeNotification, object: nil)
-	}
-	
 	private func setupPositionManager(height: CGFloat) {
 		positionManager = DVPositionManager(interactiveViewHeight: height)
 		positionManager?.delegate = self
 	}
 	
-	private func setupInteractiveView(frame: CGRect) {
-		interactiveView = DVInteractiveView(frame: .zero)
+	private func setupHeaderView(frame: CGRect) {
+		headerView = DVHeaderView(frame: .zero)
 		
-		guard let interactiveView = interactiveView else { return }
+		guard let interactiveView = headerView else { return }
 		interactiveView.delegate = positionManager
 		
 		addSubview(interactiveView)
@@ -116,7 +118,7 @@ public class DrawerView: UIView {
 	private func setupContainerView(child: UIView) {
 		containerView = DVContainerView(containing: child)
 		
-		guard let containerView = containerView, let interactiveView = interactiveView else { return }
+		guard let containerView = containerView, let interactiveView = headerView else { return }
 		
 		addSubview(containerView)
 		containerView.translatesAutoresizingMaskIntoConstraints = false
@@ -146,26 +148,27 @@ public class DrawerView: UIView {
 	}
 	
 	// MARK: - Functions
-	private func setPosition(to position: DVPosition, animated: Bool, completion: (() -> Void)? = nil) {
+	private func setPosition(to position: DVPosition, animated: Bool) {
 		guard let positionManager = positionManager else { return }
 		
 		let oldFrame = positionManager.frame(forPosition: positionManager.currentPosition)
-		positionManager.currentPosition = position
 		let fullFrame = positionManager.frame(forPosition: position)
 		let diff = abs(oldFrame.height - fullFrame.height)
+		func updateCurrentPosition() {
+			positionManager.currentPosition = position
+			delegate?.draggableView(self, didFinishUpdatingPosition: position)
+		}
 		if animated {
 			let diff = Double((diff / positionManager.maxMovement) / 2)
 			let duration = min(max(0.3, diff), 0.6)
 			UIView.animate(withDuration: duration, delay: 0, usingSpringWithDamping: 0.95, initialSpringVelocity: 0, options: .curveEaseOut, animations: {
 				self.frame = fullFrame
 			}) { _ in
-				self.delegate?.draggableView(self, didFinishUpdatingPosition: position)
-				completion?()
+				updateCurrentPosition()
 			}
 		} else {
 			frame = fullFrame
-			delegate?.draggableView(self, didFinishUpdatingPosition: position)
-			completion?()
+			updateCurrentPosition()
 		}
 	}
 	
@@ -177,8 +180,8 @@ public class DrawerView: UIView {
 		setPosition(to: supportedPositions.min() ?? DVPosition.defaultCollapsed, animated: animated)
 	}
 	
-	public func addSubviewToInteractiveView(_ subview: UIView, aligned: InteractiveViewChildAlignment) {
-		interactiveView?.addChildView(subview, alignment: aligned)
+	public func addSubviewToInteractiveView(_ subview: UIView, aligned: HeaderViewChildAlignment) {
+		headerView?.addChildView(subview, alignment: aligned)
 	}
 	
 	@objc private func panned(_ sender: UIPanGestureRecognizer) {

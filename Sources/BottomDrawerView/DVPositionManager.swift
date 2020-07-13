@@ -42,6 +42,8 @@ class DVPositionManager {
 	
 	var currentPosition: DVPosition = DVPosition.defaultExpanded
 	
+	var tapToExpand: Bool = false
+	
 	init(interactiveViewHeight: CGFloat) {
 		dragViewOffset = interactiveViewHeight
 	}
@@ -110,7 +112,18 @@ class DVPositionManager {
 	}
 }
 
-extension DVPositionManager: DVInteractiveViewDelegate {
+extension DVPositionManager: DVHeaderViewDelegate {
+	func didTapOnHeader(_ gesture: UITapGestureRecognizer) {
+		guard tapToExpand,
+				currentPosition == supportedPositions.min(),
+				let max = supportedPositions.max(),
+				max != currentPosition else
+		{
+				return
+		}
+		delegate?.updateDrawerPosition(max)
+	}
+	
 	func didPan(_ gesture: UIPanGestureRecognizer) {
 		guard let gestureView = gesture.view else { return }
 		switch gesture.state {
