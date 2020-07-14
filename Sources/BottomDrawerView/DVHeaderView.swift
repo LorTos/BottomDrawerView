@@ -13,10 +13,14 @@ protocol DVHeaderViewDelegate: class {
 }
 
 public enum HeaderViewChildAlignment {
-	case left(margin: CGFloat),
-		  center,
-		  right(margin: CGFloat),
-		  fill
+	case 	centerLeft(leftMargin: CGFloat),
+			topLeft(leftMargin: CGFloat),
+			bottomLeft(leftMargin: CGFloat),
+			center,
+			centerRight(rightMargin: CGFloat),
+			topRight(rightMargin: CGFloat),
+			bottomRight(rightMargin: CGFloat),
+			fill(horizontalMargin: CGFloat)
 }
 
 class DVHeaderView: UIView {
@@ -29,6 +33,7 @@ class DVHeaderView: UIView {
 			panGesture.isEnabled = isDragEnabled
 		}
 	}
+	var defaultMargin: CGFloat { 10 }
 	
 	weak var delegate: DVHeaderViewDelegate?
 	
@@ -70,36 +75,55 @@ class DVHeaderView: UIView {
 		var constraints: [NSLayoutConstraint] = []
 		let vCenter = view.centerYAnchor.constraint(equalTo: centerYAnchor)
 		vCenter.priority = .required
-		let top = view.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: 10)
-		top.priority = .defaultHigh
-		let bottom = view.bottomAnchor.constraint(greaterThanOrEqualTo: bottomAnchor, constant: -10)
-		bottom.priority = .defaultHigh
-		constraints += [vCenter, top, bottom]
+		let hCenter = view.centerXAnchor.constraint(equalTo: centerXAnchor)
+		hCenter.priority = .required
+		let defaultTop = view.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: defaultMargin)
+		defaultTop.priority = .defaultHigh
+		let defaultBottom = view.bottomAnchor.constraint(greaterThanOrEqualTo: bottomAnchor, constant: -defaultMargin)
+		defaultBottom.priority = .defaultHigh
 		switch alignment {
-		case .left(let margin):
+		case .centerLeft(let margin):
 			let leading = view.leadingAnchor.constraint(equalTo: leadingAnchor, constant: margin)
 			leading.priority = .required
-			let trailing = view.trailingAnchor.constraint(greaterThanOrEqualTo: trailingAnchor, constant: -margin)
-			trailing.priority = .defaultHigh
-			constraints += [leading, trailing]
+			constraints += [leading, vCenter, defaultTop, defaultBottom]
+		case .topLeft(let margin):
+			let leading = view.leadingAnchor.constraint(equalTo: leadingAnchor, constant: margin)
+			leading.priority = .required
+			let top = view.topAnchor.constraint(equalTo: topAnchor, constant: defaultMargin)
+			top.priority = .required
+			constraints += [leading, top, defaultBottom]
+		case .bottomLeft(let margin):
+			let leading = view.leadingAnchor.constraint(equalTo: leadingAnchor, constant: margin)
+			leading.priority = .required
+			let bottom = view.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -defaultMargin)
+			bottom.priority = .required
+			constraints += [leading, defaultTop, bottom]
 		case .center:
-			let hCenter = view.centerXAnchor.constraint(equalTo: centerXAnchor)
-			hCenter.priority = .required
 			let width = view.widthAnchor.constraint(lessThanOrEqualTo: widthAnchor, multiplier: 0.6)
 			width.priority = .defaultHigh
-			constraints += [hCenter, width]
-		case .right(let margin):
-			let leading = view.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: margin)
-			leading.priority = .defaultHigh
+			constraints += [hCenter, width, vCenter, defaultTop, defaultBottom]
+		case .centerRight(let margin):
 			let trailing = view.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -margin)
 			trailing.priority = .required
-			constraints += [leading, trailing]
+			constraints += [trailing, vCenter, defaultBottom, defaultTop]
+		case .topRight(let margin):
+			let trailing = view.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -margin)
+			trailing.priority = .required
+			let top = view.topAnchor.constraint(equalTo: topAnchor, constant: defaultMargin)
+			top.priority = .required
+			constraints += [trailing, top, defaultBottom]
+		case .bottomRight(let margin):
+			let trailing = view.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -margin)
+			trailing.priority = .required
+			let bottom = view.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -defaultMargin)
+			bottom.priority = .required
+			constraints += [trailing, bottom, defaultTop]
 		case .fill:
 			let leading = view.leadingAnchor.constraint(equalTo: leadingAnchor)
 			leading.priority = .required
 			let trailing = view.trailingAnchor.constraint(equalTo: trailingAnchor)
 			trailing.priority = .required
-			constraints += [leading, trailing]
+			constraints += [leading, trailing, defaultTop, defaultBottom, vCenter]
 		}
 		constraints.forEach { $0.isActive = true }
 		addConstraints(constraints)

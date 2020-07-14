@@ -10,11 +10,14 @@ import BottomDrawerView
 
 class ViewController: UIViewController {
 	
+	private lazy var tableController = ResultsTableController(style: .plain)
+	
 	private lazy var bottomDrawer: DrawerView = {
-		let drawer = DrawerView(containing: UIView(), inside: self, headerViewHeight: 60)
-		drawer.supportedPositions = [DVPosition(0.8), DVPosition(0.2)]
+		let drawer = DrawerView(containing: tableController, inside: self, headerViewHeight: 60)
+		drawer.supportedPositions = [DVPosition(0.8), DVPosition(0.4), DVPosition(0.2)]
 		drawer.cornerRadius = 24
-		drawer.addSubviewToInteractiveView(headerStack, aligned: .center)
+		drawer.addSubviewToHeaderView(headerStack, aligned: .center)
+		drawer.addSubviewToHeaderView(infoButton, aligned: .bottomRight(rightMargin: 20))
 		drawer.tapToExpand = true
 		return drawer
 	}()
@@ -41,6 +44,11 @@ class ViewController: UIViewController {
 		label.text = "Title"
 		label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
 		return label
+	}()
+	
+	private lazy var infoButton: UIButton = {
+		let button = UIButton(type: .infoDark)
+		return button
 	}()
 
 	override func viewDidLoad() {

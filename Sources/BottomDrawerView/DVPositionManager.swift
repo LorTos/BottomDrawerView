@@ -9,7 +9,7 @@
 import UIKit
 
 protocol DVPositionManagerDelegate: class {
-	func updateDrawerFrame(byAmount amount: CGFloat, gesture: UIPanGestureRecognizer)
+	func updateDrawerFrame(byAmount amount: CGFloat)
 	func updateDrawerPosition(_ position: DVPosition)
 }
 
@@ -129,7 +129,8 @@ extension DVPositionManager: DVHeaderViewDelegate {
 		switch gesture.state {
 		case .began, .changed:
 			let translationAmount = gesture.translation(in: gestureView.superview ?? gestureView).y
-			delegate?.updateDrawerFrame(byAmount: translationAmount, gesture: gesture)
+			gesture.setTranslation(.zero, in: gestureView.superview ?? gestureView)
+			delegate?.updateDrawerFrame(byAmount: translationAmount)
 		case .ended, .cancelled:
 			let velocity = gesture.velocity(in: gestureView.superview ?? gestureView).y
 			let velocityThreshold: CGFloat = 2000
@@ -149,8 +150,10 @@ extension DVPositionManager: DVHeaderViewDelegate {
 					updatedPosition = closestPosition(fromPoint: gestureView.frame.origin)
 				}
 			}
+			gesture.setTranslation(.zero, in: gestureView.superview ?? gestureView)
 			delegate?.updateDrawerPosition(updatedPosition)
-		default: return
+		default:
+			print(gesture.state.self)
 		}
 	}
 }
