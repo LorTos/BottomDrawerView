@@ -1,5 +1,5 @@
 //
-//  ResultsTableController.swift
+//  ListTableController.swift
 //  Example
 //
 //  Created by Lorenzo Toscani De Col on 14/07/2020.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ResultsTableController: UITableViewController {
+class ListTableController: UITableViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -18,7 +18,7 @@ class ResultsTableController: UITableViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return 50
+		return 30
 	}
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
