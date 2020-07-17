@@ -12,8 +12,8 @@ import CoreGraphics
 public struct DVPosition {
 	public let percent: CGFloat
 	
-	public init(_ value: CGFloat) {
-		percent = value
+	public init(_ percent: CGFloat) {
+		self.percent = max(0, min(1, percent))
 	}
 }
 

@@ -29,6 +29,12 @@ class DVPositionManager {
 	}
 	
 	var supportedPositions: Set<DVPosition> = [DVPosition.defaultExpanded, DVPosition.defaultPartial, DVPosition.defaultCollapsed]
+	var minPosition: DVPosition {
+		supportedPositions.min() ?? DVPosition.defaultCollapsed
+	}
+	var maxPosition: DVPosition {
+		supportedPositions.max() ?? DVPosition.defaultExpanded
+	}
 	
 	private var screenHeight: CGFloat { UIScreen.main.bounds.height }
 	private var screenWidth: CGFloat { UIScreen.main.bounds.width }
@@ -125,14 +131,14 @@ extension DVPositionManager: DVHeaderViewDelegate {
 	}
 	
 	func didPan(_ gesture: UIPanGestureRecognizer) {
-		guard let gestureView = gesture.view else { return }
+		guard let gestureView = gesture.view, let drawer = gestureView.superview else { return }
 		switch gesture.state {
 		case .began, .changed:
-			let translationAmount = gesture.translation(in: gestureView.superview ?? gestureView).y
-			gesture.setTranslation(.zero, in: gestureView.superview ?? gestureView)
+			let translationAmount = gesture.translation(in: drawer).y
+			gesture.setTranslation(.zero, in: drawer)
 			delegate?.updateDrawerFrame(byAmount: translationAmount)
 		case .ended, .cancelled:
-			let velocity = gesture.velocity(in: gestureView.superview ?? gestureView).y
+			let velocity = gesture.velocity(in: drawer).y
 			let velocityThreshold: CGFloat = 2000
 			let slowVelocityThreshold: CGFloat = 400
 			
@@ -142,12 +148,15 @@ extension DVPositionManager: DVHeaderViewDelegate {
 			} else if velocity < -velocityThreshold {
 				updatedPosition = supportedPositions.max() ?? DVPosition.defaultExpanded
 			} else {
+				let closest = closestPosition(fromPoint: drawer.frame.origin)
 				if velocity > slowVelocityThreshold {
-					updatedPosition = previousPosition()
+					let previous = previousPosition()
+					updatedPosition = closest < previous ? closest : previous
 				} else if velocity < -slowVelocityThreshold {
-					updatedPosition = nextPosition()
+					let next = nextPosition()
+					updatedPosition = closest > next ? closest : next
 				} else {
-					updatedPosition = closestPosition(fromPoint: gestureView.frame.origin)
+					updatedPosition = closest
 				}
 			}
 			gesture.setTranslation(.zero, in: gestureView.superview ?? gestureView)

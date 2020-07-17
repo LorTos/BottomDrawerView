@@ -8,14 +8,14 @@
 
 import UIKit
 
-public protocol DraggableViewDelegate: class {
-	func draggableView(_ draggableView: DrawerView, didFinishUpdatingPosition position: DVPosition)
-	func draggableView(_ draggableView: DrawerView, didDragByAmount verticalDragAmount: CGFloat)
+public protocol DrawerViewDelegate: class {
+	func drawerView(_ drawerView: DrawerView, didFinishUpdatingPosition position: DVPosition)
+	func drawerView(_ drawerView: DrawerView, didDragByAmount verticalDragAmount: CGFloat)
 }
 
-extension DraggableViewDelegate {
-	func draggableView(_ draggableView: DrawerView, didFinishUpdatingPosition position: DVPosition) { }
-	func draggableView(_ draggableView: DrawerView, didDragByAmount verticalDragAmount: CGFloat) { }
+public extension DrawerViewDelegate {
+	func drawerView(_ drawerView: DrawerView, didFinishUpdatingPosition position: DVPosition) { }
+	func drawerView(_ drawerView: DrawerView, didDragByAmount verticalDragAmount: CGFloat) { }
 }
 
 public class DrawerView: UIView {
@@ -37,10 +37,13 @@ public class DrawerView: UIView {
 	}()
 	
 	// MARK: - Properties
-	public var supportedPositions: Set<DVPosition> = [DVPosition.defaultExpanded, DVPosition.defaultPartial, DVPosition.defaultCollapsed] {
-		didSet {
-			positionManager?.supportedPositions = supportedPositions
-			setPosition(to: supportedPositions.min() ?? DVPosition.defaultCollapsed, animated: false)
+	public var supportedPositions: Set<DVPosition> {
+		get {
+			positionManager?.supportedPositions ?? []
+		}
+		set {
+			guard !newValue.isEmpty else { return }
+			positionManager?.supportedPositions = newValue
 		}
 	}
 	
@@ -64,7 +67,7 @@ public class DrawerView: UIView {
 	}
 	
 	// MARK: - Delegate
-	weak public var delegate: DraggableViewDelegate?
+	weak public var delegate: DrawerViewDelegate?
 	
 	// MARK: - init() and initial setup
 	public init(containing childController: UIViewController,
@@ -96,7 +99,7 @@ public class DrawerView: UIView {
 		trailingAnchor.constraint(equalTo: parentController.view.trailingAnchor).isActive = true
 		
 		setRoundedCornersAndShadow()
-		setPosition(to: supportedPositions.min() ?? DVPosition.defaultCollapsed, animated: false)
+		setPosition(to: positionManager!.minPosition, animated: false)
 		backgroundColor = .white
 
 		if let scrollView = childView as? UIScrollView {
@@ -168,7 +171,7 @@ public class DrawerView: UIView {
 		let diff = abs(oldFrame.height - fullFrame.height)
 		func updateCurrentPosition() {
 			positionManager.currentPosition = position
-			delegate?.draggableView(self, didFinishUpdatingPosition: position)
+			delegate?.drawerView(self, didFinishUpdatingPosition: position)
 		}
 		if animated {
 			let diff = Double((diff / positionManager.maxMovement) / 2)
@@ -185,11 +188,17 @@ public class DrawerView: UIView {
 	}
 	
 	public func expand(animated: Bool = true) {
-		setPosition(to: supportedPositions.max() ?? DVPosition.defaultExpanded, animated: animated)
+		guard let pManager = positionManager else {
+			return
+		}
+		setPosition(to: pManager.maxPosition, animated: animated)
 	}
 	
 	public func collapse(animated: Bool = true) {
-		setPosition(to: supportedPositions.min() ?? DVPosition.defaultCollapsed, animated: animated)
+		guard let pManager = positionManager else {
+			return
+		}
+		setPosition(to: pManager.minPosition, animated: animated)
 	}
 	
 	public func addSubviewToHeaderView(_ subview: UIView, aligned: HeaderViewChildAlignment) {
@@ -215,12 +224,12 @@ public class DrawerView: UIView {
 	private func enableScrollViewIfNeeded(_ scrollView: UIScrollView) {
 		var shouldEnableScroll = scrollView.contentOffset.y >= 0
 		switch currentPosition {
-		case supportedPositions.max():
+		case positionManager?.maxPosition:
 			shouldEnableScroll = shouldEnableScroll && backgroundPanGesture.velocity(in: self).y < 0
-		case supportedPositions.min():
+		case positionManager?.minPosition:
 			shouldEnableScroll = shouldEnableScroll && backgroundPanGesture.velocity(in: self).y > 0
 		default:
-			print(backgroundPanGesture.velocity(in: self).y)
+			break
 		}
 		scrollView.isScrollEnabled = shouldEnableScroll
 	}
@@ -235,7 +244,7 @@ extension DrawerView: DVPositionManagerDelegate {
 		let isInsideLimit = newFrame.origin.y >= screenHeight - positionManager.totalHeight
 		if isInsideLimit {
 			frame = newFrame
-			delegate?.draggableView(self, didDragByAmount: amount)
+			delegate?.drawerView(self, didDragByAmount: amount)
 		}
 	}
 	
